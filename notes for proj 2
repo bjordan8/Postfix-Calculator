@@ -1,0 +1,74 @@
+|| (token.charAt(0) == 2) || (token.charAt(0) == 3) || 
+					(token.charAt(0) == 4) || (token.charAt(0) == 5) || (token.charAt(0) == 6) || (token.charAt(0) == 7) || 
+					(token.charAt(0) == 8) || (token.charAt(0) == 9)
+					
+					
+					/////
+					
+	 || (token.substring(0, 0) == "1") || (token.substring(0, 0) == "2") || 
+					(token.substring(0, 0) == "3") || (token.substring(0, 0) == "4") || (token.substring(0, 0) == "5") || 
+					(token.substring(0, 0) == "6") || (token.substring(0, 0) == "7") || (token.substring(0, 0) == "8") ||
+					(token.substring(0, 0) == "9")) 
+					
+					
+	public String infixToPostfix(){		
+		String postFix = "";
+		String expression = jtfInfix.getText();
+		String delims = "+-*/() ";
+		StringTokenizer strToken = new StringTokenizer(expression, delims, true);
+		String token = null;
+		Stack<String> signs = new Stack<String>(expression.length());
+		while(strToken.hasMoreTokens()){
+			token = strToken.nextToken();
+			// test if number
+			if ((token.contains("0")) || (token.contains("1"))||(token.contains("2"))||(token.contains("3"))||
+					(token.contains("4"))||(token.contains("5"))||(token.contains("6"))||(token.contains("7"))
+						||(token.contains("8"))||(token.contains("9"))){
+				postFix += token +" ";
+			 //test if left parenthesis
+			}else if (token.equals("(")){
+				try{
+					signs.push(token);
+				}catch (StackFullException see){
+					System.out.println("Stack is full");
+				}
+			//test if right parenthesis
+			}else if (token.equals(")")){ 
+				try{
+					while(!signs.peek().equals("(")){
+						postFix += signs.pop() + " ";
+					}
+					signs.pop();
+				}catch (StackEmptyException see){
+					System.out.println("Stack is empty");
+				}
+			//checks * or /
+			}else if (token.equals("*") || (token.equals("/"))){ // multiplication & division
+				try {
+					signs.push(token);
+				}catch (StackFullException see)	{
+					System.out.println("Stack is full");
+				}
+			// checks for + or -
+			}
+			else if(token.equals("+") || token.equals("-")){
+				try{
+					while (signs.peek().equals("*") || signs.peek().equals("/")){
+						postFix += signs.pop() + " ";
+					}
+				}catch (StackEmptyException see){
+					System.out.println("Stack is empty");
+				}
+				signs.push(token);
+				}
+			}
+			while(!signs.isEmpty()){
+				try {
+					postFix += signs.pop();
+				}catch (StackEmptyException see) {
+					System.out.println("Stack is empty");
+			}
+		}
+		return postFix;
+	}
+					
